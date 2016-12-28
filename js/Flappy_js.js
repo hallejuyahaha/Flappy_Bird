@@ -74,6 +74,8 @@ bucket.prototype.update = function(){
     if(this.x == -300)
     {
       this.x = 1200;
+      this.long = Math.floor(Math.random()*300+50);
+      console.log(this.long);
     }
     this.x = this.x -background_speed-2;
 }
@@ -83,10 +85,10 @@ var preTime= Date.now();             //获取当前时间
 var b = new Bird(img_Bird,cvs.width/5,cvs.height/8,0.0003,ctx);//创建小鸟
 var back = new backGround(img_Back1,img_Back2,0,0,background_speed,ctx);//创建背景
 var bucket_one = new bucket(1200,Math.floor(Math.random()*300+50),ctx);
-var bucket_two = new bucket(1440,Math.floor(Math.random()*300+50),ctx);
-var bucket_three = new bucket(1880,Math.floor(Math.random()*300+50),ctx);
-var bucket_four = new bucket(2320,Math.floor(Math.random()*300+50),ctx);
-var bucket_five = new bucket(2760,Math.floor(Math.random()*300+50),ctx);
+var bucket_two = new bucket(1500,Math.floor(Math.random()*300+50),ctx);
+var bucket_three = new bucket(1800,Math.floor(Math.random()*300+50),ctx);
+var bucket_four = new bucket(2100,Math.floor(Math.random()*300+50),ctx);
+var bucket_five = new bucket(2400,Math.floor(Math.random()*300+50),ctx);
 
 //主函数
 function run(){
