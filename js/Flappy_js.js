@@ -59,7 +59,7 @@ var bucket = function(x,long,ctx){
 }
 bucket.prototype.draw = function(){
     ctx.beginPath();
-    ctx.fillStyle="#F00";/*设置填充颜色*/
+    ctx.fillStyle="#F75000";/*设置填充颜色*/
     //上桶
     ctx.fillRect(this.x,0,50,this.long);
     ctx.fillRect(this.x-5,this.long,60,10);
@@ -75,7 +75,7 @@ bucket.prototype.update = function(){
     {
       this.x = 1200;
       this.long = Math.floor(Math.random()*300+50);
-      console.log(this.long);
+      // console.log(this.long);
     }
     this.x = this.x -background_speed-2;
 }
