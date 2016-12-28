@@ -8,6 +8,7 @@ var img_Back2 = document.getElementById("back2");
 var g = 0.002;//重力加速度
 var fly_Power = -0.6;//飞行力度
 var background_speed = 4;//背景移动速度
+var between = 200;
 //全局变量结束
 
 //Bird的构造函数
@@ -24,10 +25,7 @@ Bird.prototype.draw = function (){
 }
 Bird.prototype.update = function(t){ 
    this.speed = g*t+this.speed;
-   this.y += Math.floor(0.5*g*t*t+this.speed*t);;
-    // this.speed = this.speed + this.g *t;
-    // this.y = this.y + this.speed * t;
-   
+   this.y += Math.floor(0.5*g*t*t+this.speed*t);
 }
 //Bird的构造函数结束
 
@@ -49,32 +47,46 @@ backGround.prototype.update = function(){
     {
       this.x = 0;
     }
-    this.x = this.x - this.speed;
+    this.x = this.x - background_speed;
 }
 //背景的构造函数结束
 
 //木桶的构造函数
-var bucket = function(x,y,speed,ctx){
-    
+var bucket = function(x,long,ctx){
+    this.x = x;
+    this.long = long;
+    this.ctx = ctx;
 }
 bucket.prototype.draw = function(){
     ctx.beginPath();
-    ctx.fillStyle="#F00";/*设置填充颜色*/ 
-    ctx.fillRect(0,0,50,100);
+    ctx.fillStyle="#F00";/*设置填充颜色*/
+    //上桶
+    ctx.fillRect(this.x,0,50,this.long);
+    ctx.fillRect(this.x-5,this.long,60,10);
+    //下桶
+    ctx.fillRect(this.x-5,this.long+10+between,60,10);
+    ctx.fillRect(this.x,this.long+10+between+10,50,600-(this.long+10+between+10));
     ctx.closePath();//可选步骤，关闭绘制的路径
     ctx.stroke(); //填充
 }
 
 bucket.prototype.update = function(){
-   
+    if(this.x == -300)
+    {
+      this.x = 1200;
+    }
+    this.x = this.x -background_speed-2;
 }
 //木桶的构造函数结束
 
 var preTime= Date.now();             //获取当前时间
 var b = new Bird(img_Bird,cvs.width/5,cvs.height/8,0.0003,ctx);//创建小鸟
 var back = new backGround(img_Back1,img_Back2,0,0,background_speed,ctx);//创建背景
-var bucket_one = new bucket(0,0,background_speed,ctx);
-
+var bucket_one = new bucket(1200,Math.floor(Math.random()*300+50),ctx);
+var bucket_two = new bucket(1440,Math.floor(Math.random()*300+50),ctx);
+var bucket_three = new bucket(1880,Math.floor(Math.random()*300+50),ctx);
+var bucket_four = new bucket(2320,Math.floor(Math.random()*300+50),ctx);
+var bucket_five = new bucket(2760,Math.floor(Math.random()*300+50),ctx);
 
 //主函数
 function run(){
@@ -87,7 +99,16 @@ function run(){
        back.update();
        back.draw();
        //画背景结束
+       bucket_one.update();
        bucket_one.draw();
+       bucket_two.update();
+       bucket_two.draw();
+       bucket_three.update();
+       bucket_three.draw();
+       bucket_four.update();
+       bucket_four.draw();
+       bucket_five.update();
+       bucket_five.draw();
        //画小鸟
        b.update(dt);
        b.draw();
