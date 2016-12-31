@@ -3,12 +3,14 @@ var ctx = cvs.getContext("2d");
 var img_Bird = document.getElementById("bird");
 var img_Back1 = document.getElementById("back1");
 var img_Back2 = document.getElementById("back2");
-
+ 
 //全局变量
 var g = 0.002;//重力加速度
 var fly_Power = -0.6;//飞行力度
 var background_speed = 4;//背景移动速度
 var between = 200;
+var game_over = false;
+
 //全局变量结束
 
 //Bird的构造函数
@@ -79,6 +81,25 @@ bucket.prototype.update = function(){
     }
     this.x = this.x -background_speed-2;
 }
+bucket.prototype.hit = function(bx,by){
+    if((bx+48 > this.x-5 && bx+48 < this.x+55 && by < this.long+10)||(bx+48 > this.x-5 && bx+48 < this.x+55 && by > this.long+10+between))
+    {
+      game_over = true;//右上角
+    }
+    if((bx > this.x-5 && bx < this.x+55 && by < this.long+10)||(bx > this.x-5 && bx < this.x+55 && by > this.long+10+between))
+    {
+      game_over = true;//左上角
+    }
+    if((bx+48 > this.x-5 && bx+48 < this.x+55 && by+42 < this.long+10)||(bx+48 > this.x-5 && bx+48 < this.x+55 && by+42 > this.long+10+between))
+    {
+      game_over = true;//右下角
+    }
+    if((bx > this.x-5 && bx < this.x+55 && by+42 < this.long+10)||(bx > this.x-5 && bx < this.x+55 && by+42 > this.long+10+between))
+    {
+      game_over = true;//左下角
+    }
+}
+
 //木桶的构造函数结束
 
 var preTime= Date.now();             //获取当前时间
@@ -101,25 +122,45 @@ function run(){
        back.update();
        back.draw();
        //画背景结束
+       bucket_one.hit(b.x,b.y);
        bucket_one.update();
        bucket_one.draw();
+       bucket_two.hit(b.x,b.y);
        bucket_two.update();
        bucket_two.draw();
+       bucket_three.hit(b.x,b.y);
        bucket_three.update();
        bucket_three.draw();
+       bucket_four.hit(b.x,b.y);
        bucket_four.update();
        bucket_four.draw();
+       bucket_five.hit(b.x,b.y);
        bucket_five.update();
        bucket_five.draw();
        //画小鸟
        b.update(dt);
        b.draw();
        //画小鸟结束
-//-----------------------------------------------
-   requestAnimationFrame(run);    //再次执行run函数
+       if(b.y > 600 || b.y < 0)
+       {
+          game_over = true;
+       }
+       if(game_over == false)
+       {
+          requestAnimationFrame(run);   
+       }else
+       {
+          var result = window.confirm("GAME OVER\n是否从新开始");
+          if(result){
+              location.reload() ;
+          }
+       }
  }
+ requestAnimationFrame(run);//首次执行run函数；
  cvs.addEventListener("click",function(){
       b.speed = fly_Power;
    });
-requestAnimationFrame(run);   //首次执行run函数；
+
+       
+       
 //主函数结束
