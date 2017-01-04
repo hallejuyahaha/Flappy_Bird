@@ -7,10 +7,10 @@ var img_Back2 = document.getElementById("back2");
 //全局变量
 var g = 0.002;//重力加速度
 var fly_Power = -0.6;//飞行力度
-var background_speed = 4;//背景移动速度
+var background_speed = 3;//背景移动速度
 var between = 200;
 var game_over = false;
-
+var score = 0;//分数
 //全局变量结束
 
 //Bird的构造函数
@@ -102,6 +102,14 @@ bucket.prototype.hit = function(bx,by){
 
 //木桶的构造函数结束
 
+//判断得分函数
+var defen = function(score){
+    ctx.font = '60px Microsoft YaHei';
+    ctx.fillStyle = '#DCDCDC';
+    ctx.fillText(score, 30,70);
+}
+//判断得分函数结束
+
 var preTime= Date.now();             //获取当前时间
 var b = new Bird(img_Bird,cvs.width/5,cvs.height/8,0.0003,ctx);//创建小鸟
 var back = new backGround(img_Back1,img_Back2,0,0,background_speed,ctx);//创建背景
@@ -141,6 +149,23 @@ function run(){
        b.update(dt);
        b.draw();
        //画小鸟结束
+
+       //判断得分
+       var flag = false;
+       if(b.x == bucket_one.x || b.x == bucket_two.x || b.x == bucket_three.x || b.x == bucket_four.x || b.x == bucket_five.x)
+       {
+          flag = true;
+       }
+       if(flag == true)
+       {
+          score ++;
+       }
+       flag = false;
+       defen(score);
+       // console.log(score);
+       //判断得分结束
+
+       //判断游戏结束
        if(b.y > 600 || b.y < 0)
        {
           game_over = true;
@@ -155,6 +180,7 @@ function run(){
               location.reload() ;
           }
        }
+       //判断游戏结束
  }
  requestAnimationFrame(run);//首次执行run函数；
  cvs.addEventListener("click",function(){
